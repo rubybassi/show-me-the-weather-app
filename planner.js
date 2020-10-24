@@ -13,6 +13,7 @@ $(weatherSearchBtn).on("click", (event) => {
   const usercity = userInput.val();
   // console.log("user city:", usercity);
   getCurrentForecast(usercity);
+  getFiveDayForecast(usercity);
   currentWeatherContainer.empty(); // clears additional results from day container - need to run save search ftn before this
 });
 
@@ -24,7 +25,7 @@ const getCurrentForecast = (usercity) => {
     "&units=metric" +
     "&appid=" +
     myKey;
-  console.log("query url:", queryUrl);
+  //console.log("query url:", queryUrl);
   $.ajax({
     url: queryUrl,
   })
@@ -32,9 +33,9 @@ const getCurrentForecast = (usercity) => {
     .catch();
 };
 
-// handle current day weather data function
+// handle current day weather data function - render page current day
 let handleWeatherData = (data) => {
-  console.log("weather data", data);
+  //console.log("weather data", data);
   let temperature = data.main.temp;
   // console.log("current weather is", temperature);
   let cityName = data.name;
@@ -56,7 +57,7 @@ let handleWeatherData = (data) => {
   getUvIndex(latitude, longitude);
 };
 
-// apil call and funtion for UV index
+// api call and funtion for UV index - need to add uv color rules
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
     "http://api.openweathermap.org/data/2.5/uvi?lat=" +
@@ -65,12 +66,12 @@ const getUvIndex = (latitude, longitude) => {
     longitude +
     "&appid=" +
     myKey;
-  console.log("query url:", queryUVUrl);
+  //console.log("query url:", queryUVUrl);
   $.ajax({
     url: queryUVUrl,
   })
     .then(function (uv) {
-      console.log(queryUVUrl);
+      //console.log(queryUVUrl);
       let uvIndex = uv.value;
       $("#currentWeatherContainer").append("<p>UV Index: " + uvIndex + " </p>"); //change to uv
     })
@@ -78,7 +79,61 @@ const getUvIndex = (latitude, longitude) => {
 };
 
 // api call for 5 day forecast
+const getFiveDayForecast = (usercity) => {
+  const query5DayUrl =
+    "http://api.openweathermap.org/data/2.5/forecast?q=" +
+    usercity +
+    "&units=metric" +
+    "&appid=" +
+    myKey;
+  //console.log("query url:", query5DayUrl);
+  $.ajax({
+    url: query5DayUrl,
+  })
+    .then(handle5DayWeatherData)
+    .catch();
+};
 
+// handle current day weather data function - render page - 5 day forecast
+const handle5DayWeatherData = (data) => {
+  //console.log("5 day", data);
+  let date = data.list[0].dt;
+  let formattedDate = new Date(date * 1000);
+  //console.log("date:", formattedDate);
+  let icon = data.list[0].weather[0].icon;
+  let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+  //console.log("icon url:", iconUrl);
+  let temperature = data.list[0].main.temp;
+  //console.log("temp:", temperature);
+  let humidity = data.list[0].main.humidity;
+  $("#forecastContainer").append("<h3>5-Day Forecast:</h3>"); 
+  data.list.forEach((forecast) => {
+    let icon = forecast.weather[0].icon;
+    let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+     // console.log("forecast", forecast.main.temp);
+     $("#forecastContainer")
+    .append("<p>" + new Date(forecast.dt * 1000) + "</p>")
+    .append("<img src=" + iconUrl + ">")
+    .append("<p>Temperature: " + forecast.main.temp + "&#176;C</p>")
+    .append("<p>Humidity: " + forecast.main.humidity + "%</p>");
+  });
+  /*
+   
+  $("#forecastContainer")
+    .append("<h2>" + cityName + "</h2>")
+    .append("<p>" + formattedDate + "</p>")
+    .append("<img src=" + iconUrl + ">")
+    .append("<p>Temperature: " + temperature + "&#176;C</p>")
+    .append("<p>Humidity: " + humidity + "%</p>")
+    .append("<p>Windspeed: " + windSpeed + " MPH</p>");
+  getUvIndex(latitude, longitude);
+  */
+
+
+
+
+
+};
 // init function
 
 // set items to storage
@@ -86,8 +141,6 @@ const getUvIndex = (latitude, longitude) => {
 // get items from storage
 
 // get last searched item function
-
-// render page - current and 5 day forecast
 
 // render search history function
 
