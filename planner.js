@@ -37,7 +37,7 @@ const renderSearchHistory = (usercity) => {
 // API call for current weather
 const getCurrentForecast = (usercity) => {
   const queryUrl =
-  `http://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
+  `https://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
   //console.log("query url:", queryUrl);
   $.ajax({
     url: queryUrl,
@@ -68,7 +68,7 @@ let handleWeatherData = (data) => {
 // API call and funtion for UV index and conditional statements for UV colour status
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
-   `http://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
+   `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
   //console.log("query url:", queryUVUrl);
   $.ajax({
     url: queryUVUrl,
@@ -100,7 +100,7 @@ const getUvIndex = (latitude, longitude) => {
 // API call for 5 day forecast
 const getFiveDayForecast = (usercity) => {
   const query5DayUrl =
-    `http://api.openweathermap.org/data/2.5/forecast?q=${usercity}&units=metric&appid=${myKey}`;
+    `https://api.openweathermap.org/data/2.5/forecast?q=${usercity}&units=metric&appid=${myKey}`;
   //console.log("query url:", query5DayUrl);
   $.ajax({
     url: query5DayUrl,
@@ -114,7 +114,7 @@ const handle5DayWeatherData = (data) => {
   $('#forecastHeader').append('<h4>5-Day Forecast:</h4>');
   data.list.forEach((forecast) => {
     let icon = forecast.weather[0].icon;
-    let iconUrl = `http://openweathermap.org/img/w/${icon}.png`;
+    let iconUrl = `https://openweathermap.org/img/w/${icon}.png`;
     let date = new Date(forecast.dt * 1000).toLocaleDateString();
     // console.log("forecast", forecast.main.temp);
     if (forecast.dt_txt.split(" ")[1] == "09:00:00") {
