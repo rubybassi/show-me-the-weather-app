@@ -61,7 +61,7 @@ let handleWeatherData = (data) => {
   getUvIndex(latitude, longitude);
 };
 
-// api call and funtion for UV index - need to add uv color rules
+// api call and funtion for UV index and conditional statements for UV colour status
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
     "http://api.openweathermap.org/data/2.5/uvi?lat=" +
@@ -77,7 +77,14 @@ const getUvIndex = (latitude, longitude) => {
     .then(function (uv) {
       //console.log(queryUVUrl);
       let uvIndex = uv.value;
-      $("#currentWeatherContainer").append("<p>UV Index: " + uvIndex + " </p>"); //change to uv
+      $("#currentWeatherContainer").append("<p>UV Index:<span>" + uvIndex + "</span></p>"); //change to uv
+      if (uvIndex <= 2) {
+        $("#currentWeatherContainer").find('span').addClass("bg-success text-white");
+      } else if (uvIndex > 2 && uvIndex <7) {
+        $("#currentWeatherContainer").find('span').addClass("bg-warning text-dark");
+      } else {
+        $("#currentWeatherContainer").find('span').addClass("bg-danger text-white");
+      }
     })
     .catch();
 };
@@ -119,12 +126,6 @@ const handle5DayWeatherData = (data) => {
   });
 };
 
-/*
-.append("<h5>" + new Date(forecast.dt * 1000).toLocaleDateString() + "</h5>")
-.append("<img src=" + iconUrl + ">")
-.append("<p>Temp: " + forecast.main.temp + "&#176;C</p>")
-.append("<p>Humidity: " + forecast.main.humidity + "&#176;C</p>");
-*/
 // init function
 
 // set items to storage
@@ -136,6 +137,3 @@ const handle5DayWeatherData = (data) => {
 // render search history function
 
 // event listener on search history clicks using event delagation on #seachHistoryList
-
-//class='card-title'
-// class='card-text'
