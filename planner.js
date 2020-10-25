@@ -6,32 +6,38 @@ const currentWeatherContainer = $('#currentWeatherContainer');
 const fiveDayContainer = $('#forecastContainer');
 const myKey = 'a80545903d1ac3a1c7c18dc4d9d8c063';
 
+// -----------USER SEARCH EVENT HANDLER AND CALL MAIN FUNCTIONS ---------------------------------------------
+
 // EVENT LISTENER for user search input
 $(weatherSearchBtn).on('click', (event) => {
   event.preventDefault();
   const usercity = userInput.val().toLowerCase();
   // console.log("user city:", usercity);
   getData(usercity); // gets api data and renders containers
-  saveToStorage(usercity);
+  //saveToStorage(usercity);
+  //getCurrentForecast(usercity);
+  //getFiveDayForecast(usercity);
   getSearchHistory(); 
   renderSearchHistory(usercity); 
-  // clears additional results from containers
-  currentWeatherContainer.empty();
-  forecastHeader.empty();
-  fiveDayContainer.empty();
+  // clears previous results from containers
+  //currentWeatherContainer.empty();
+ // forecastHeader.empty();
+  //fiveDayContainer.empty();
 });
 
 // RENDER search history list function
 const renderSearchHistory = (usercity) => {
   $('#searchHistoryContainer').append(
-    `<button class='btn btn-light btn-block searchListBtn'>${usercity}</button>`
+    `<button class='btn btn-light btn-block searchListBtn' id='${usercity}'>${usercity}</button>`
   );
 };
+
+// -----------CURRENT DAY API AND RENDER ---------------------------------------------
 
 // API call for current weather
 const getCurrentForecast = (usercity) => {
   const queryUrl =
-    `http://api.openweathermap.org/data/2.5/weather?q="${usercity}"&units=metric&appid="${myKey}`;
+  `https://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
   //console.log("query url:", queryUrl);
   $.ajax({
     url: queryUrl,
@@ -46,21 +52,23 @@ let handleWeatherData = (data) => {
   let icon = data.weather[0].icon;
   let date = data.dt;
   let formattedDate = new Date(date * 1000).toLocaleDateString();
-  let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+  let iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
   $("#currentWeatherContainer")
     .append(`<h2>${data.name}</h2>`)
     .append(`<h2>(${formattedDate})</h2>`)
     .append(`<img src=${iconUrl}>`)
-    .append(`<p>Temperature: ${data.main.temp}"&#176;C</p>`)
-    .append(`<p>Humidity: ${data.main.humidity}"%</p>`)
-    .append(`<p>'Windspeed: ${data.wind.speed}MPH</p>`);
-  getUvIndex(`${data.coord.lat} ${data.coord.lon}`);
+    .append(`<p>Temperature: ${data.main.temp}&#176;C</p>`)
+    .append(`<p>Humidity: ${data.main.humidity}%</p>`)
+    .append(`<p>Windspeed: ${data.wind.speed}MPH</p>`);
+  getUvIndex(data.coord.lat, data.coord.lon);
 };
+
+// -----------UV INDEX API AND RENDER ---------------------------------------------
 
 // API call and funtion for UV index and conditional statements for UV colour status
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
-    `http://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;
+   `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
   //console.log("query url:", queryUVUrl);
   $.ajax({
     url: queryUVUrl,
@@ -86,6 +94,8 @@ const getUvIndex = (latitude, longitude) => {
     })
     .catch();
 };
+
+// -----------FORECAST API AND RENDER ---------------------------------------------
 
 // API call for 5 day forecast
 const getFiveDayForecast = (usercity) => {
@@ -120,6 +130,9 @@ const handle5DayWeatherData = (data) => {
   });
 };
 
+
+// -----------STORAGE FUNCTIONS ---------------------------------------------
+
 let saveArray = [];
 // SET items to storage
 const saveToStorage = (usercity) => {
@@ -135,20 +148,6 @@ const getSearchHistory = () => {
   console.log('my returned results:', retrievedArray); // logs an array
 };
 
-
-
-
-// event listener on search history clicks using event delagation on #seachHistoryList
-$('button').on('click', (event) => {
-  event.preventDefault();
-  const userListSearch = $(this).text();
- // console.log("i clicked on button: ", userListSearch);
- // getData(userListSearch);
- 
-});
-
-
-// $(function () { - on page load render last item if repeat visit
 // get last searched item function - need to finish off to load on page refresh
 const getLastItem = (retrievedArray) => {
   let last = retrievedArray[retrievedArray.length - 1];
@@ -157,8 +156,32 @@ const getLastItem = (retrievedArray) => {
 };
 
 
+// -----------SEARCH HISTORY BUTTON HANDLER ---------------------------------------------
+
+
+// event listener on search history clicks using event delagation on #seachHistoryList
+$('#searchHistoryContainer').on('click', () => {
+ // event.preventDefault();
+  //let btn = this.id; // not sure what this is not working?
+  let btn = event.target.id;
+  console.log(btn);
+  getData(btn);
+  //currentWeatherContainer.empty();
+  //forecastHeader.empty();
+  //fiveDayContainer.empty();
+  //getCurrentForecast(btn);
+  //getFiveDayForecast(btn);
+
+  //getData(userListSearch);
+  //console.log("i clicked on button: ", userListSearch);
+ // getData(userListSearch);
+});
+
 // call api data functions
 const getData = (usercity) => {
+  currentWeatherContainer.empty();
+  forecastHeader.empty();
+  fiveDayContainer.empty();
   getCurrentForecast(usercity);
   getFiveDayForecast(usercity);
 }
