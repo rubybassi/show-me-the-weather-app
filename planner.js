@@ -1,6 +1,7 @@
 // reference variables for DOM
-const weatherSearchForm = $("#weatherSearchform");
+//const weatherSearchForm = $("#weatherSearchform");
 const weatherSearchBtn = $("#userSubmit");
+const forecastHeader = $('#forecastHeader');
 let userInput = $("#userInput");
 const searchListContainer = $("#seachHistoryList");
 let currentWeatherContainer = $("#currentWeatherContainer");
@@ -14,7 +15,10 @@ $(weatherSearchBtn).on("click", (event) => {
   // console.log("user city:", usercity);
   getCurrentForecast(usercity);
   getFiveDayForecast(usercity);
-  currentWeatherContainer.empty(); // clears additional results from day container - need to run save search ftn before this
+  // clears additional results from containers - need to run save search ftn before this
+  currentWeatherContainer.empty(); 
+  forecastHeader.empty();
+  fiveDayContainer .empty();
 });
 
 // api call for current weather
@@ -33,7 +37,7 @@ const getCurrentForecast = (usercity) => {
     .catch();
 };
 
-// handle current day weather data function - render page current day
+// render current day data and elements
 let handleWeatherData = (data) => {
   //console.log("weather data", data);
   let temperature = data.main.temp;
@@ -43,13 +47,13 @@ let handleWeatherData = (data) => {
   let humidity = data.main.humidity;
   let icon = data.weather[0].icon;
   let date = data.dt;
-  let formattedDate = new Date(date * 1000);
+  let formattedDate = new Date(date * 1000).toLocaleDateString();
   let latitude = data.coord.lat;
   let longitude = data.coord.lon;
   let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
   $("#currentWeatherContainer")
     .append("<h2>" + cityName + "</h2>")
-    .append("<p>" + formattedDate + "</p>")
+    .append("<h2>(" + formattedDate + ")</h2>")
     .append("<img src=" + iconUrl + ">")
     .append("<p>Temperature: " + temperature + "&#176;C</p>")
     .append("<p>Humidity: " + humidity + "%</p>")
@@ -94,46 +98,33 @@ const getFiveDayForecast = (usercity) => {
     .catch();
 };
 
-// handle current day weather data function - render page - 5 day forecast
+// // render 5 day forecast data and elements
 const handle5DayWeatherData = (data) => {
-  //console.log("5 day", data);
-  let date = data.list[0].dt;
-  let formattedDate = new Date(date * 1000);
-  //console.log("date:", formattedDate);
-  let icon = data.list[0].weather[0].icon;
-  let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
-  //console.log("icon url:", iconUrl);
-  let temperature = data.list[0].main.temp;
-  //console.log("temp:", temperature);
-  let humidity = data.list[0].main.humidity;
-  $("#forecastContainer").append("<h3>5-Day Forecast:</h3>"); 
+  $("#forecastHeader").append("<h4>5-Day Forecast:</h4>");
   data.list.forEach((forecast) => {
     let icon = forecast.weather[0].icon;
     let iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
-     // console.log("forecast", forecast.main.temp);
-     $("#forecastContainer")
-    .append("<p>" + new Date(forecast.dt * 1000) + "</p>")
-    .append("<img src=" + iconUrl + ">")
-    .append("<p>Temperature: " + forecast.main.temp + "&#176;C</p>")
-    .append("<p>Humidity: " + forecast.main.humidity + "%</p>");
+    let date = new Date(forecast.dt * 1000).toLocaleDateString();
+    // console.log("forecast", forecast.main.temp);
+    if(forecast.dt_txt.split(" ")[1] == "09:00:00") {
+      $("#forecastContainer").append(
+        `<div class="card bg-primary text-white"><div class="card-body">
+        <p>${date}</p>
+        <img src="${iconUrl}">
+        <p>Temp:${forecast.main.temp}&#176;C</p>
+        <p>Humidity:${forecast.main.humidity}&#176;C</p>
+        </div></div>`
+      );
+    }
   });
-  /*
-   
-  $("#forecastContainer")
-    .append("<h2>" + cityName + "</h2>")
-    .append("<p>" + formattedDate + "</p>")
-    .append("<img src=" + iconUrl + ">")
-    .append("<p>Temperature: " + temperature + "&#176;C</p>")
-    .append("<p>Humidity: " + humidity + "%</p>")
-    .append("<p>Windspeed: " + windSpeed + " MPH</p>");
-  getUvIndex(latitude, longitude);
-  */
-
-
-
-
-
 };
+
+/*
+.append("<h5>" + new Date(forecast.dt * 1000).toLocaleDateString() + "</h5>")
+.append("<img src=" + iconUrl + ">")
+.append("<p>Temp: " + forecast.main.temp + "&#176;C</p>")
+.append("<p>Humidity: " + forecast.main.humidity + "&#176;C</p>");
+*/
 // init function
 
 // set items to storage
@@ -145,3 +136,6 @@ const handle5DayWeatherData = (data) => {
 // render search history function
 
 // event listener on search history clicks using event delagation on #seachHistoryList
+
+//class='card-title'
+// class='card-text'
