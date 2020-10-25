@@ -37,7 +37,7 @@ const renderSearchHistory = (usercity) => {
 // API call for current weather
 const getCurrentForecast = (usercity) => {
   const queryUrl =
-  `https://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
+  `http://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
   //console.log("query url:", queryUrl);
   $.ajax({
     url: queryUrl,
@@ -68,7 +68,7 @@ let handleWeatherData = (data) => {
 // API call and funtion for UV index and conditional statements for UV colour status
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
-   `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
+   `http://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
   //console.log("query url:", queryUVUrl);
   $.ajax({
     url: queryUVUrl,
