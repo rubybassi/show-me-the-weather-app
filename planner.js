@@ -6,23 +6,15 @@ const currentWeatherContainer = $('#currentWeatherContainer');
 const fiveDayContainer = $('#forecastContainer');
 const myKey = 'a80545903d1ac3a1c7c18dc4d9d8c063';
 
-// -----------USER SEARCH EVENT HANDLER AND CALL MAIN FUNCTIONS ---------------------------------------------
-
 // EVENT LISTENER for user search input
 $(weatherSearchBtn).on('click', (event) => {
   event.preventDefault();
   const usercity = userInput.val().toLowerCase();
   // console.log("user city:", usercity);
   getData(usercity); // gets api data and renders containers
-  //saveToStorage(usercity);
-  //getCurrentForecast(usercity);
-  //getFiveDayForecast(usercity);
   getSearchHistory(); 
-  renderSearchHistory(usercity); 
-  // clears previous results from containers
-  //currentWeatherContainer.empty();
- // forecastHeader.empty();
-  //fiveDayContainer.empty();
+  renderSearchHistory(usercity);
+  saveToStorage(usercity); 
 });
 
 // RENDER search history list function
@@ -31,8 +23,6 @@ const renderSearchHistory = (usercity) => {
     `<button class='btn btn-light btn-block searchListBtn' id='${usercity}'>${usercity}</button>`
   );
 };
-
-// -----------CURRENT DAY API AND RENDER ---------------------------------------------
 
 // API call for current weather
 const getCurrentForecast = (usercity) => {
@@ -63,8 +53,6 @@ let handleWeatherData = (data) => {
   getUvIndex(data.coord.lat, data.coord.lon);
 };
 
-// -----------UV INDEX API AND RENDER ---------------------------------------------
-
 // API call and funtion for UV index and conditional statements for UV colour status
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
@@ -94,8 +82,6 @@ const getUvIndex = (latitude, longitude) => {
     })
     .catch();
 };
-
-// -----------FORECAST API AND RENDER ---------------------------------------------
 
 // API call for 5 day forecast
 const getFiveDayForecast = (usercity) => {
@@ -131,50 +117,13 @@ const handle5DayWeatherData = (data) => {
 };
 
 
-// -----------STORAGE FUNCTIONS ---------------------------------------------
-
-let saveArray = [];
-// SET items to storage
-const saveToStorage = (usercity) => {
-  saveArray.push(usercity);
-  localStorage.setItem('cities', JSON.stringify(saveArray));
-};
-
-// GET items from storage
-const getSearchHistory = () => {
-  let retrievedArray = JSON.parse(localStorage.getItem('cities'));
-  getLastItem(retrievedArray); // logs last item
-  // if (retrievedArray !== null) saveArray = retrievedArray;
-  console.log('my returned results:', retrievedArray); // logs an array
-};
-
-// get last searched item function - need to finish off to load on page refresh
-const getLastItem = (retrievedArray) => {
-  let last = retrievedArray[retrievedArray.length - 1];
-  console.log('the last item was:', last);
-  return last;
-};
-
-
-// -----------SEARCH HISTORY BUTTON HANDLER ---------------------------------------------
-
-
-// event listener on search history clicks using event delagation on #seachHistoryList
+// event listener on search history clicks
 $('#searchHistoryContainer').on('click', () => {
- // event.preventDefault();
+  // event.preventDefault();
   //let btn = this.id; // not sure what this is not working?
   let btn = event.target.id;
-  console.log(btn);
+  // console.log(btn);
   getData(btn);
-  //currentWeatherContainer.empty();
-  //forecastHeader.empty();
-  //fiveDayContainer.empty();
-  //getCurrentForecast(btn);
-  //getFiveDayForecast(btn);
-
-  //getData(userListSearch);
-  //console.log("i clicked on button: ", userListSearch);
- // getData(userListSearch);
 });
 
 // call api data functions
@@ -185,3 +134,28 @@ const getData = (usercity) => {
   getCurrentForecast(usercity);
   getFiveDayForecast(usercity);
 }
+
+
+let saveArray = [];
+// SET items to storage
+const saveToStorage = (usercity) => {
+  saveArray.push(usercity);
+  localStorage.setItem('cities', JSON.stringify(saveArray));
+};
+
+// GET items from storage - need to finish off to load on page refresh
+const getSearchHistory = () => {
+  let retrievedArray = JSON.parse(localStorage.getItem('cities'));
+ // getLastItem(retrievedArray); // logs last item
+  // if (retrievedArray !== null) saveArray = retrievedArray;
+ // console.log('my returned results:', retrievedArray); // logs an array
+};
+
+/*
+// get last searched item function - need to finish off to load on page refresh
+const getLastItem = (retrievedArray) => {
+  let last = retrievedArray[retrievedArray.length - 1];
+//  console.log('the last item was:', last);
+  return last;
+};
+*/
