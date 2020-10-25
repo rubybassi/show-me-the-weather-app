@@ -11,14 +11,17 @@ const myKey = "a80545903d1ac3a1c7c18dc4d9d8c063";
 // event listener for user search input
 $(weatherSearchBtn).on("click", (event) => {
   event.preventDefault();
-  const usercity = userInput.val();
+  const usercity = userInput.val().toLowerCase();
   // console.log("user city:", usercity);
   getCurrentForecast(usercity);
   getFiveDayForecast(usercity);
+  saveToStorage(usercity);
+  getSearchHistory();
+  renderSearchHistory(usercity);
   // clears additional results from containers - need to run save search ftn before this
   currentWeatherContainer.empty(); 
   forecastHeader.empty();
-  fiveDayContainer .empty();
+  fiveDayContainer.empty();
 });
 
 // api call for current weather
@@ -126,14 +129,30 @@ const handle5DayWeatherData = (data) => {
   });
 };
 
-// init function
 
+let saveArray =[];
 // set items to storage
+const saveToStorage = (usercity) => {
+  saveArray.push(usercity);
+  localStorage.setItem("search", JSON.stringify(saveArray));
+}
 
 // get items from storage
+const getSearchHistory = () => {
+  let retrievedArray = JSON.parse(localStorage.getItem("search"));
+ // if (retrievedArray !== null) saveArray = retrievedArray;
+  //console.log("my returned results:", retrievedArray);
+};
+
+
+
+
+// render search history list function
+const renderSearchHistory = (usercity) => {
+$('#searchHistoryContainer').append('<button class="btn btn-light btn-block searchListBtn">' + usercity + '</button>');  
+};
+// event listener on search history clicks using event delagation on #seachHistoryList
+
+
 
 // get last searched item function
-
-// render search history function
-
-// event listener on search history clicks using event delagation on #seachHistoryList
