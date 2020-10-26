@@ -61,3 +61,7 @@ form {
 .card-body  {
   width: 180px;
 }
+
+.searchListBtn {
+  text-align: left;
+}
