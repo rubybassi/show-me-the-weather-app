@@ -57,3 +57,7 @@ margin-left: 5px;
 form {
   margin-bottom: 20px;
 }
+
+.card-body  {
+  width: 180px;
+}
