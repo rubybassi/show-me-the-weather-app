@@ -53,5 +53,6 @@ The following image was provided to demonstrate what the web application's layou
 * [Visual Studio Code](https://code.visualstudio.com/)
 * Terminal
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [OpenWeatherMap API](https://openweathermap.org/api)
 
 
