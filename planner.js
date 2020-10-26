@@ -109,7 +109,7 @@ const handle5DayWeatherData = (data) => {
         <p>${date}</p>
         <img src=${iconUrl}>
         <p>Temp:${forecast.main.temp}&#176;C</p>
-        <p>Humidity:${forecast.main.humidity}&#176;C</p>
+        <p>Humidity:${forecast.main.humidity}%</p>
         </div></div>`
       );
     }
