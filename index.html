@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container-fluid">
+    <section class="container-fluid">
       <h1>Weather Dashboard</h1>
       <div class="row">
-        <!--4 column left side container for search and search history-->
-        <div id="searchContainer" class="col-3">
+        <!--3 column left side container for search and search history-->
+        <aside id="searchContainer" class="col-3">
           <h4>Search for a City:</h4>
           <form id="weatherSearchform" class="form-inline">
             <input
@@ -35,21 +35,20 @@
             </button>
           </form>
           <div id="searchHistoryContainer">
-              <!--dynamically inserted list items go here with name as id-->
+            <!--dynamically inserted list items go here with name as id-->
           </div>
-        </div>
-        <!--8 column container for current and 5 day forecast-->
-        <div id="weatherContainer" class="col-9">
-            <div id="currentWeatherContainer"></div>
-            <!--dynamically inserted current day weathert-->
-            <div id="forecastHeader"></div>
-            <!--dynamically inserted five day forecast header-->
-            <div id="forecastContainer"></div>
-            <!--dynamically inserted five day forecast cards-->
-          </div>
-        </div>
+        </aside>
+        <!--9 column container for current and 5 day forecast-->
+        <main id="weatherContainer" class="col-9">
+          <section id="currentWeatherContainer"></section>
+          <!--dynamically inserted current day weathert-->
+          <section id="forecastHeader"></section>
+          <!--dynamically inserted five day forecast header-->
+          <section id="forecastContainer"></section>
+          <!--dynamically inserted five day forecast cards-->
+        </main>
       </div>
-    </div>
+    </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
