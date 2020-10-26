@@ -9,7 +9,7 @@ const myKey = 'a80545903d1ac3a1c7c18dc4d9d8c063';
 // EVENT LISTENER for user search input
 $(weatherSearchBtn).on('click', (event) => {
   event.preventDefault();
-  const usercity = userInput.val().toLowerCase();
+  const usercity = userInput.val().toUpperCase();
   // console.log("user city:", usercity);
   getData(usercity); // gets api data and renders containers
   getSearchHistory(); 
@@ -24,7 +24,7 @@ const renderSearchHistory = (usercity) => {
   );
 };
 
-// API call for current weather
+// API call for current day weather
 const getCurrentForecast = (usercity) => {
   const queryUrl =
   `https://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
@@ -108,8 +108,8 @@ const handle5DayWeatherData = (data) => {
         `<div class="card bg-primary text-white"><div class="card-body">
         <p>${date}</p>
         <img src=${iconUrl}>
-        <p>Temp:${forecast.main.temp}&#176;C</p>
-        <p>Humidity:${forecast.main.humidity}%</p>
+        <p>Temp: ${forecast.main.temp}&#176;C</p>
+        <p>Humidity: ${forecast.main.humidity}%</p>
         </div></div>`
       );
     }
@@ -118,8 +118,8 @@ const handle5DayWeatherData = (data) => {
 
 
 // event listener on search history clicks
-$('#searchHistoryContainer').on('click', () => {
-  // event.preventDefault();
+$('#searchHistoryContainer').on('click', (event) => {
+  event.preventDefault();
   //let btn = this.id; // not sure what this is not working?
   let btn = event.target.id;
   // console.log(btn);
