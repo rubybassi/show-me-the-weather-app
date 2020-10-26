@@ -28,6 +28,10 @@ html {
   margin-bottom: 20px;
 }
 
+#searchContainer > h4 {
+  padding-top: 20px;
+}
+
 #currentWeatherContainer > h2,
 img {
   display: inline;
@@ -48,4 +52,8 @@ h1 {
 span {
 padding: 5px;
 margin-left: 5px;
+}
+
+form {
+  margin-bottom: 20px;
 }
