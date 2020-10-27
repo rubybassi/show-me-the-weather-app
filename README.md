@@ -6,6 +6,8 @@
 
 This project is my attempt of creating a weather app using the OpenWeather API to retrieve weather data for current day and five day forecast. The app runs in the browser and features dynamically created HTML and CSS powered by jQuery code. 
 
+The app loads a day or night background based on time of day.
+
 The user can search for a city and will be shown the current day weather data including the UV index with a colour-coded indicator. They will also be shown the five day forecast. 
 
 Each time the user searches, their input is saved to local storage and a dynamically generated search history list is shown; the user can click on the respective city button and is shown the same weather data sets.
@@ -14,7 +16,7 @@ Comments were added throughout the Javascript file, highlighting the key coding 
 
 [View my final project on GitHub pages](https://rubybassi.github.io/show-me-the-weather-app/)
 
-![weather](https://user-images.githubusercontent.com/25780327/97124947-0c752080-172a-11eb-8093-f7dd93963931.gif)
+![Weather App Demo](https://user-images.githubusercontent.com/25780327/97254649-bd50ed80-1806-11eb-8590-854a36df436f.gif)
 
 
 If you have feedback, please feel free to drop me a comment.
