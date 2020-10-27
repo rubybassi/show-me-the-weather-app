@@ -45,7 +45,7 @@ If you have feedback, please feel free to drop me a comment.
 > THEN I am presented with the last searched city forecast
 
 
-### Expected Layout Mockup∏
+### Expected Layout Mockup
 
 The following image was provided to demonstrate what the web application's layout should resemble, although there was room for customisation:
 
