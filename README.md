@@ -56,5 +56,5 @@ The following image was provided to demonstrate what the web application's layou
 * Terminal
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [OpenWeatherMap API](https://openweathermap.org/api)
-
+* [Weather App Vectors by Vecteezy](https://www.vecteezy.com/free-vector/weather-app)
 
