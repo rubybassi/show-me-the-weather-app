@@ -6,9 +6,10 @@ const currentWeatherContainer = $('#currentWeatherContainer');
 const fiveDayContainer = $('#forecastContainer');
 const myKey = 'a80545903d1ac3a1c7c18dc4d9d8c063';
 
-// GET items from storage and pull last array item on page load
+// GET items from storage, pull last array item on page load and set background
 $(function() {
   //console.log( "ready!" );
+  backgroundImage();
   let retrievedArray = JSON.parse(localStorage.getItem('cities'));
   if (retrievedArray !== null) {
     saveArray = retrievedArray;
@@ -154,3 +155,16 @@ const getUvIndex = (latitude, longitude) => {
         // console.log(btn);
         getData(btn);
       });
+
+      // SWITCH backgroud colour based on hour of day
+      const backgroundImage = () => {
+        let current = new Date();
+        let hours = current.getHours();
+        console.log('time is ', hours);
+        if (hours > 6 && hours < 17) {
+          $('body').css("background-image", "url('assets/day.png')");
+        } else {
+          $('body').css("background-image", "url('assets/night.png')");
+        }
+      }
+
