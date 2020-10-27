@@ -41,12 +41,12 @@ const getCurrentForecast = (usercity) => {
 };
 
 // RENDER current day data and elements
-let handleWeatherData = (data) => {
+const handleWeatherData = (data) => {
   //console.log("weather data", data);
   let icon = data.weather[0].icon;
   let date = data.dt;
   let formattedDate = new Date(date * 1000).toLocaleDateString();
-  let iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
+  let iconUrl = `https://openweathermap.org/img/w/${icon}.png`;
   $("#currentWeatherContainer")
   .append(`<h2>${data.name}</h2>`)
   .append(`<h2>(${formattedDate})</h2>`)
@@ -142,7 +142,7 @@ const getUvIndex = (latitude, longitude) => {
     // RENDER search history list function
     const renderSearchHistory = (usercity) => {
       $('#searchHistoryContainer').append(
-        `<button class='btn btn-light btn-block searchListBtn' id='${usercity}'>${usercity}</button>`
+        `<button class='btn btn-light btn-block' id='${usercity}'>${usercity}</button>`
         );
       };
 
