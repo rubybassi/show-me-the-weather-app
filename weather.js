@@ -8,14 +8,13 @@ const myKey = 'a80545903d1ac3a1c7c18dc4d9d8c063';
 
 // GET items from storage, pull last array item on page load and set background
 $(function() {
-  //console.log( "ready!" );
   backgroundImage();
   let retrievedArray = JSON.parse(localStorage.getItem('cities'));
   if (retrievedArray !== null) {
     saveArray = retrievedArray;
     let lastcity = saveArray[saveArray.length -1];
-   // console.log('last city was:', lastcity);
     getData(lastcity);
+    saveArray.map((city => renderSearchHistory(city)));
   }
     return false;
 });
@@ -33,7 +32,6 @@ const getData = (usercity) => {
 const getCurrentForecast = (usercity) => {
   const queryUrl =
   `https://api.openweathermap.org/data/2.5/weather?q=${usercity}&units=metric&appid=${myKey}`;
-  //console.log("query url:", queryUrl);
   $.ajax({
     url: queryUrl,
   })
@@ -43,7 +41,6 @@ const getCurrentForecast = (usercity) => {
 
 // RENDER current day data and elements
 const handleWeatherData = (data) => {
-  //console.log("weather data", data);
   let icon = data.weather[0].icon;
   let date = data.dt;
   let formattedDate = new Date(date * 1000).toLocaleDateString();
@@ -62,12 +59,10 @@ const handleWeatherData = (data) => {
 const getUvIndex = (latitude, longitude) => {
   let queryUVUrl =
   `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${myKey}`;    
-  //console.log("query url:", queryUVUrl);
   $.ajax({
     url: queryUVUrl,
   })
   .then(function (uv) {
-    //console.log(queryUVUrl);
     let uvIndex = uv.value;
     $('#currentWeatherContainer').append(
       `<p>UV Index:<span>${uvIndex}</span></p>`);
@@ -92,7 +87,6 @@ const getUvIndex = (latitude, longitude) => {
   const getFiveDayForecast = (usercity) => {
     const query5DayUrl =
     `https://api.openweathermap.org/data/2.5/forecast?q=${usercity}&units=metric&appid=${myKey}`;
-    //console.log("query url:", query5DayUrl);
     $.ajax({
       url: query5DayUrl,
     })
@@ -107,7 +101,6 @@ const getUvIndex = (latitude, longitude) => {
       let icon = forecast.weather[0].icon;
       let iconUrl = `https://openweathermap.org/img/w/${icon}.png`;
       let date = new Date(forecast.dt * 1000).toLocaleDateString();
-      // console.log("forecast", forecast.main.temp);
       if (forecast.dt_txt.split(" ")[1] == "09:00:00") {
         $('#forecastContainer').append(
           `<div class="card bg-primary text-white"><div class="card-body">
@@ -125,9 +118,7 @@ const getUvIndex = (latitude, longitude) => {
     $(weatherSearchBtn).on('click', (event) => {
       event.preventDefault();
       const usercity = userInput.val().toUpperCase();
-      // console.log("user city:", usercity);
-      getData(usercity); // gets api data and renders containers
-      //getSearchHistory(); 
+      getData(usercity); 
       renderSearchHistory(usercity);
       saveToStorage(usercity); 
     });
@@ -150,9 +141,7 @@ const getUvIndex = (latitude, longitude) => {
       // EVENT LISTENER on search history clicks
       $('#searchHistoryContainer').on('click', (event) => {
         event.preventDefault();
-        //let btn = this.id; // not sure what this is not working?
         let btn = event.target.id;
-        // console.log(btn);
         getData(btn);
       });
 
@@ -160,7 +149,6 @@ const getUvIndex = (latitude, longitude) => {
       const backgroundImage = () => {
         let current = new Date();
         let hours = current.getHours();
-        console.log('time is ', hours);
         if (hours > 6 && hours < 17) {
           $('body').css("background-image", "url('assets/day.png')");
         } else {
